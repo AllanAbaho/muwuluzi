@@ -17,12 +17,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $students = DB::table('students')
-        ->paginate(5);
-        return view('students.index', ['students' => $students]);
+        $s = $request->input('s');
+        $students = Student::latest()
+            ->search($s)
+            ->paginate(5);
+        return view('students.index', compact('students','users', 's'));
     }
 
     /**
@@ -101,68 +103,5 @@ class StudentController extends Controller
     {
          Student::where('id', $id)->delete();
          return redirect()->route('students.index')->with('message','Student has been deleted successfully');
-    }
-
-    public function search(Request $request) {
-        $constraints = [
-            'surname' => $request['surname'],
-            'given_name' => $request['given_name'],
-            'nationality' => $request['nationality'],
-            'sex' => $request['sex'],
-            'date_of_birth' => $request['date_of_birth'],
-            'district' => $request['district'],
-            'phone_number' => $request['phone_number'],
-            'class' => $request['class']         
-            ];
-        $students = $this->doSearchingQuery($constraints);
-        $constraints['given_name'] = $request['given_name'];
-        return view('students.index', ['students' => $students, 'searchingVals' => $constraints]);
-    }
-    private function doSearchingQuery($constraints) {
-        $query = DB::table('students')
-        ->select('students.surname as surname', 'students.given_name as given_name',
-            'students.nationality as nationality', 'students.sex as sex',
-            'students.date_of_birth as date_of_birth', 'students.district as district',
-            'students.phone_number as phone_number', 'students.class as class');
-        $fields = array_keys($constraints);
-        $index = 0;
-        foreach ($constraints as $constraint) {
-            if ($constraint != null) {
-                $query = $query->where($fields[$index], 'like', '%'.$constraint.'%');
-            }
-
-            $index++;
-        }
-        return $query->paginate(5);
-    }
-    private function validateInput($request) {
-        $this->validate($request, [
-            'surname' => 'required|max:60',
-            'given_name' => 'required|max:60',
-            'nationality' => 'required|max:60',
-            'sex' => 'required',
-            'date_of_birth' => 'required',
-            'phone_number' => 'required|max:10',
-            'district' => 'required',
-            'county' => 'required',
-            'subcounty' => 'required',
-            'village' => 'required',
-            'level_of_education' => 'required',
-            'class' => 'required',
-            'father_name' => 'required',
-            'father_contact' => 'required',
-            'mother_name' => 'required',
-            'mother_contact' => 'required'
-        ]);
-    }
-
-    private function createQueryInput($keys, $request) {
-        $queryInput = [];
-        for($i = 0; $i < sizeof($keys); $i++) {
-            $key = $keys[$i];
-            $queryInput[$key] = $request[$key];
-        }
-
-        return $queryInput;
     }
 }

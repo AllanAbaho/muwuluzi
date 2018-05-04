@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('dashboard');
+    return view('home');
 })->middleware('auth');
 
 Auth::routes();
@@ -23,5 +23,4 @@ Route::get('/dashboard', 'DashboardController@index');
 Route::resource('students', 'StudentController');
 Route::post('students/search', 'StudentController@search')->name('students.search');
 
-Route::resource('employee-management', 'EmployeeManagementController');
-Route::post('employee-management/search', 'EmployeeManagementController@search')->name('employee-management.search');
+Route::resource('users', 'UserController');

@@ -19,13 +19,14 @@
         <div class="col-sm-6"></div>
         <div class="col-sm-6"></div>
       </div>
-      <form method="POST" action="{{ route('students.search') }}">
-         {{ csrf_field() }}
-         @component('layouts.search', ['title' => 'Search'])
-          @component('layouts.two-cols-search-row', ['items' => ['Surname', 'Given Name'], 
-          'oldVals' => [isset($searchingVals) ? $searchingVals['surname'] : '', isset($searchingVals) ? $searchingVals['given_name'] : '']])
-          @endcomponent
-        @endcomponent
+      <form class="form-inline" method="GET" action="{{ route('students.index') }}">
+        <div class="form-group">
+          <input type="text" name="s" class="form-control" 
+          placeholder="surname" value="{{ isset($s) ? $s : '' }}">           
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-success">  Search </button>        
+        </div>
       </form>
     <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
       <div class="row">
@@ -71,22 +72,7 @@
               </tr>
             @endforeach
         </tbody>
-            <tfoot>
-              <tr>
-                <tr role="row">
-                <th width="8%" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Picture: activate to sort column descending" aria-sort="ascending">Surname</th>
-                <th width="10%" class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Name: activate to sort column descending" aria-sort="ascending">Given Name</th>
-                <th width="12%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Address: activate to sort column ascending">Nationality</th>
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending">Sex</th>
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Birthdate: activate to sort column ascending">Date Of Birth</th>
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="HiredDate: activate to sort column ascending">District</th>
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Department: activate to sort column ascending">Phone Number</th>
-                <th width="8%" class="sorting hidden-xs" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Division: activate to sort column ascending">Class</th>
-                <th tabindex="0" aria-controls="example2" rowspan="1" colspan="2" aria-label="Action: activate to sort column ascending">Action</th>
-              </tr>
-              </tr>
-            </tfoot>
-          </table>
+         </table>   
         </div>
       </div>
       <div class="row">
@@ -95,9 +81,10 @@
         </div>
         <div class="col-sm-7">
           <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-            {{ $students->links() }}
+            {{ $students->appends(['s' => $s])->links() }}
           </div>
         </div>
+
       </div>
     </div>
   </div>

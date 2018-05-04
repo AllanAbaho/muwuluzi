@@ -31,9 +31,11 @@
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="/"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
+        <li class="active"><a href="/dashboard"><i class="fa fa-link"></i> <span>Dashboard</span></a></li>
         
-        <li><a href="{{ route('students.index') }}"><i class="fa fa-link"></i> <span>Student Management</span></a></li>
+        <li><a href="{{ route('students.index') }}"><i class="fa fa-link"></i> <span>Student Management</span></a></li>        
+        <li><a href="{{ route('users.index') }}"><i class="fa fa-link"></i> <span>User Management</span></a></li>
+
         
       </ul>
       <!-- /.sidebar-menu -->

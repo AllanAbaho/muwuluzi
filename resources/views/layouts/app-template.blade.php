@@ -90,7 +90,7 @@
       <script>
       $(document).ready(function() {
         //Date picker
-        $('#birthDate').datepicker({
+        $('#date_of_birth').datepicker({
           autoclose: true,
           format: 'yyyy/mm/dd'
         });
